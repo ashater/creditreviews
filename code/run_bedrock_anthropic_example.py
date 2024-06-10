@@ -109,13 +109,23 @@ model = BedrockChat(
             )
 
 
-# Prompt
-prompt_text = """You are an assistant tasked with summarizing tables and text. \ 
-Give a concise summary of the table or text. Table or text chunk: {element} """
-prompt = ChatPromptTemplate.from_template(prompt_text)
+# # Prompt
+# prompt_text = """You are an assistant tasked with summarizing tables and text. \ 
+# Give a concise summary of the table or text. Table or text chunk: {element} """
+# prompt = ChatPromptTemplate.from_template(prompt_text)
 
-# Summary chain
-model = ChatOpenAI(temperature=0, model="gpt-4")
+
+
+# # Summary chain
+# model = ChatOpenAI(temperature=0, model="gpt-4")
+# summarize_chain = {"element": lambda x: x} | prompt | model | StrOutputParser()
+
+
+prompt_text = """You are an assistant tasked with summarizing tables within a provided text chunk.
+        If the text chunk contains tables, then give a brief summary of the table and list the row and column
+            names to identify what is captured in the table. Do not sumnmarize quantitative results in the table.
+            If there is no table present, then just return "No table". \n\n Text: {element} """
+prompt = ChatPromptTemplate.from_template(prompt_text)
 summarize_chain = {"element": lambda x: x} | prompt | model | StrOutputParser()
 
 
